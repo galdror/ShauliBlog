@@ -1,0 +1,44 @@
+﻿@model ShauliBlog.Models.Post
+
+@{
+    ViewBag.Title = "PostDetails";
+}
+
+<h2>Post Details</h2>
+
+@if (Session["Name"] != null)
+{
+    <div>
+        <article class="blogPost">
+            <header>
+                <h2>@Model.Title</h2>
+                <p>Posted on @Model.PostDate.ToString("MM/dd/yyyy") by <a href=@Url.Content(Model.Website)>@Model.Author</a> - <a href="#comments">@Model.Comments.Count comments</a></p>
+            </header>
+            <div id="bodyFontText">
+                <p>@Model.Content</p>
+                   <section style="@(!Model.Image.Equals("None") ? "display:block" : "display:none")">
+                            <img src=@Url.Content(Model.Image) alt="Flower" />
+                   </section>
+
+                <section style="@(!Model.Video.Equals("None") ? "display:block" : "display:none")">
+                    <video controls="controls">
+                        <source src=@Url.Content(Model.Video) type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
+                </section>
+            </div>
+        </article>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "EditPost", new { id = Model.ID }) |
+        @Html.ActionLink("Back to List", "Manage")
+    </p>
+}
+else
+{
+    <h3>You are not a manager! Access Denied</h3>
+
+    <div>
+        @Html.ActionLink("Back to Blog", "Index", "Blog")
+    </div>
+}

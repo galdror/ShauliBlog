@@ -1,0 +1,42 @@
+﻿@model IEnumerable<ShauliBlog.Models.Objects.PostAuthorPostObject>
+@{
+    ViewBag.Title = "Posts per Author";
+}
+
+<h2>Posts per Author</h2>
+
+<table class="table" border="1">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Author)
+        </th>
+        <th>
+            Posts
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th rowspan="@(item.PostTitles.Count()+1)">
+                @Html.DisplayFor(modelItem => item.Author)
+            </th>
+        </tr>
+
+        foreach (var com in item.PostTitles)
+        {
+            <tr>
+                <td>@com</td>
+            </tr>
+        }
+    }
+
+</table>
+
+<div>
+    @Html.ActionLink("Back to Queries", "Index", "Queries")
+</div>
+
+
+

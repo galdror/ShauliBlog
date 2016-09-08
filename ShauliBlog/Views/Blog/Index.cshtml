@@ -1,0 +1,68 @@
+﻿@model IEnumerable<ShauliBlog.Models.Post>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div id="mainContent">
+        @foreach (var pst in Model)
+        {
+             <section>
+             <article class="blogPost">
+                <header>
+                    <h2>@pst.Title</h2>
+                    <p>Posted on @pst.PostDate.ToString("MM/dd/yyyy") by <a href=@Url.Content(pst.Website)>@pst.Author</a> -  @Html.ActionLink(pst.Comments.Count+" comments", "ManageComments", new { id = pst.ID })</p>
+                </header>
+                <div id="bodyFontText">
+                    <p>@pst.Content</p>
+                    <section style="@(!pst.Image.Equals("None") ? "display:block" : "display:none")">
+                        <img src=@Url.Content(pst.Image) alt="Flower" />
+                    </section>
+                    <section style="@(!pst.Video.Equals("None") ? "display:block" : "display:none")">
+                        <video controls="controls">
+                            <source src=@Url.Content(pst.Video) type="video/mp4" />
+                            Your browser does not support the video tag.
+                        </video>
+                    </section>
+                </div>
+                </article>
+            </section>
+
+            <section id="comments">
+                <h3>Comments</h3>
+                @foreach (var comm in pst.Comments)
+                {
+                 <article>
+                    <header>
+                        <h4>@comm.Title</h4>
+                        <a href="@comm.Website">@comm.Author</a>
+                    </header>
+                     <p>@comm.Content</p>
+                     </article>
+                }
+               
+            </section>
+            <form action="#" method="post">
+                <h3>Post a comment</h3>
+                <input hidden name="postID" id="postID" value="@pst.ID.ToString()" />
+                <p>
+                    <label for="title">Title</label>
+                    <input name="title" id="title" type="text" required />
+                </p>
+                <p>
+                    <label for="author">Author</label>
+                    <input name="author" id="author" type="text" required />
+                </p>
+                <p>
+                    <label for="website">Website</label>
+                    <input name="website" id="website" type="url" pattern="https?://.+" required />
+                </p>
+                <p>
+                    <label for="comment">Comment</label>
+                    <textarea name="comment" id="comment" required></textarea>
+                </p>
+                <p><input type="submit" value="Post comment" /></p>
+            </form>
+            <hr>
+        }
+</div>

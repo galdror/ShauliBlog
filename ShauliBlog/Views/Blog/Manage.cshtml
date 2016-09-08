@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ShauliBlog.Models.Post>
+
+@{
+    ViewBag.Title = "Manage";
+}
+
+<h2>Manage Posts</h2>
+
+@if (Session["Name"] != null)
+{
+    using (Html.BeginForm(FormMethod.Post))
+    {
+    <p>
+        Title: @Html.TextBox("searchTitle") 
+        <br />
+        Author: @Html.TextBox("searchAuthor")
+        <br />
+        Has Image: @Html.CheckBox("hasImage", false)
+        <br />
+        Has Video: @Html.CheckBox("hasVideo", false)
+        <br />
+        <input type="submit" value="Filter" /> &nbsp;
+        <input type="button" value="Display All" onclick="@("window.location.href='" + @Url.Action("Manage", "Blog") + "'");" />
+    </p>
+    }
+
+    <table class="table" border="1">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th></th>
+        </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })|
+                @Html.ActionLink("Edit", "EditPost", new { id = item.ID }) |
+                @Html.ActionLink("Details", "PostDetails", new { id = item.ID })|
+                @Html.ActionLink("Comments", "ManageComments", new { id = item.ID })|
+            </td>
+        </tr>
+    }
+
+    </table>
+    <br />
+    <p>
+        @Html.ActionLink("Add New Post", "CreatePost")
+    </p>
+}
+else
+{
+    <h3>You are not a manager! Access Denied</h3>
+
+    <div>
+        @Html.ActionLink("Back to Blog", "Index", "Blog")
+    </div>
+}
